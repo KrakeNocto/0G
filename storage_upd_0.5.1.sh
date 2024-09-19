@@ -7,6 +7,7 @@ mv $HOME/0g-storage-node/run/config-testnet.toml $HOME/config-testnet-backup.tom
 rm $HOME/0g-storage-node/target/release/zgs_node
 wget http://188.40.125.206:31212/zgs_node
 mv zgs_node $HOME/0g-storage-node/target/release/
+chmod +x /root/0g-storage-node/target/release/zgs_node
 
 mv $HOME/config-testnet-backup.toml $HOME/0g-storage-node/run/config-testnet.toml
 
