@@ -20,7 +20,8 @@ systemctl daemon-reload && systemctl stop zgstorage && systemctl disable zgstora
 echo "Storage version is $(/root/0g-storage-node/target/release/zgs_node --version)"
 
 sleep 2
+rm storage_upd_0.5.1.sh
 
 tail -f $HOME/0g-storage-node/run/log/zgs.log.$(TZ=UTC date +%Y-%m-%d)
 
-rm storage_upd_0.5.1.sh
+
