@@ -15,6 +15,10 @@ sed -i 's|^network_boot_nodes = .*|network_boot_nodes = ["/ip4/54.219.26.22/udp/
 
 systemctl restart zgstorage
 
+echo "Storage version is $(/root/0g-storage-node/target/release/zgs_node --version)"
+
+sleep 2
+
 while true; do 
     response=$(curl -s -X POST http://localhost:5678 -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"zgs_getStatus","params":[],"id":1}')
     logSyncHeight=$(echo $response | jq '.result.logSyncHeight')
