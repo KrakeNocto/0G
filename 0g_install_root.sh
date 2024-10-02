@@ -67,7 +67,6 @@ sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.0gchain/config/config
 
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@latest
 
-cosmovisor init $HOME/go/bin/0gchaind && \
 mkdir -p $HOME/.0gchain/cosmovisor/upgrades && \
 mkdir -p $HOME/.0gchain/cosmovisor/backup
 
