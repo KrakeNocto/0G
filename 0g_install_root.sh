@@ -16,7 +16,9 @@ read -r MONIKER
 
 OG_CHAIN_ID=zgtendermint_16600-2
 
-wget http://78.46.41.124:13124/0gchaind
+wget http://167.235.117.176:13124/0gchaind
+cp /root/0gchaind /root/go/bin
+chmod +x /root/go/bin/0gchaind
 
 min_am=10
 max_am=64
@@ -65,8 +67,6 @@ sed -i \
 sed -i "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0ua0gi\"/" $HOME/.0gchain/config/app.toml
 sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.0gchain/config/config.toml
 
-echo "export DAEMON_NAME=0gchaind" >> $HOME/.bash_profile
-echo "export DAEMON_HOME=$(find $HOME -type d -name ".0gchain")" >> $HOME/.bash_profile
 cosmovisor init $HOME/go/bin/0gchaind && \
 mkdir -p $HOME/.0gchain/cosmovisor/upgrades && \
 mkdir -p $HOME/.0gchain/cosmovisor/backup
@@ -78,7 +78,7 @@ After=network-online.target
 
 [Service]
 User=root
-ExecStart=/root/go/bin/cosmovisor start --home /root/.0gchain
+ExecStart=/root/go/bin/cosmovisor run --home /root/.0gchain
 WorkingDirectory=/root/.0gchain
 Restart=on-failure
 RestartSec=10
@@ -90,9 +90,19 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 
 [Install]
 WantedBy=multi-user.target
+EOF
 
 mkdir -p /root/.0gchain/cosmovisor/upgrades/v0.3.1/bin/
+mkdir -p /root/.0gchain/cosmovisor/genesis/bin/
 mv /root/0gchaind /root/.0gchain/cosmovisor/upgrades/v0.3.1/bin/
+cp /root/.0gchain/cosmovisor/upgrades/v0.3.1/bin/0gchaind /root/.0gchain/cosmovisor/genesis/bin/
+
+chmod +x /root/.0gchain/cosmovisor/genesis/bin/0gchaind
+
+cp $HOME/.0gchain/data/priv_validator_state.json $HOME/.0gchain/priv_validator_state.json.backup
+rm -rf $HOME/.0gchain/data 
+curl https://server-5.itrocket.net/testnet/og/og_2024-10-02_1302656_snap.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.0gchain
+mv $HOME/.0gchain/priv_validator_state.json.backup $HOME/.0gchain/data/priv_validator_state.json
 
 systemctl daemon-reload && \
 systemctl enable ogd && \
