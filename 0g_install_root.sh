@@ -17,6 +17,7 @@ read -r MONIKER
 OG_CHAIN_ID=zgtendermint_16600-2
 
 wget http://167.235.117.176:13124/0gchaind
+mkdir -p /root/go/bin
 cp /root/0gchaind /root/go/bin
 chmod +x /root/go/bin/0gchaind
 
@@ -25,18 +26,15 @@ max_am=64
 random_am=$(shuf -i $min_am-$max_am -n 1)
 echo $random_am
 
-0gchaind config chain-id $OG_CHAIN_ID
-0gchaind config node tcp://localhost:${random_am}657
-
-go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@latest
+/root/go/bin/0gchaind config chain-id $OG_CHAIN_ID
+/root/go/bin/0gchaind config node tcp://localhost:${random_am}657
 
 git clone -b v0.2.5 https://github.com/0glabs/0g-chain.git
 
-0gchaind init $MONIKER --chain-id $OG_CHAIN_ID
-0gchaind config chain-id $OG_CHAIN_ID
-0gchaind config node tcp://localhost:${random_am}657
+/root/go/bin/0gchaind init $MONIKER --chain-id $OG_CHAIN_ID
+/root/go/bin/0gchaind config chain-id $OG_CHAIN_ID
+/root/go/bin/0gchaind config node tcp://localhost:${random_am}657
 
-sudo rm $HOME/.0gchain/config/genesis.json && \
 wget https://github.com/0glabs/0g-chain/releases/download/v0.2.3/genesis.json -O $HOME/.0gchain/config/genesis.json
 
 SEEDS="81987895a11f6689ada254c6b57932ab7ed909b6@54.241.167.190:26656,010fb4de28667725a4fef26cdc7f9452cc34b16d@54.176.175.48:26656,e9b4bc203197b62cc7e6a80a64742e752f4210d5@54.193.250.204:26656,68b9145889e7576b652ca68d985826abd46ad660@18.166.164.232:26656" && \
@@ -45,7 +43,7 @@ peers=$(curl -sS https://lightnode-rpc-0g.grandvalleys.com/net_info | jq -r '.re
 echo $peers
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$peers\"|" $HOME/.0gchain/config/config.toml
 
-sed -i.bak -e "s%:26658%:${OG_PORT}658%g;
+sed -i.bak -e "s%:26658%:${random_am}658%g;
 s%:26657%:${random_am}657%g;
 s%:6060%:${random_am}060%g;
 s%:26656%:${random_am}656%g;
@@ -67,6 +65,8 @@ sed -i \
 sed -i "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0ua0gi\"/" $HOME/.0gchain/config/app.toml
 sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.0gchain/config/config.toml
 
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@latest
+
 cosmovisor init $HOME/go/bin/0gchaind && \
 mkdir -p $HOME/.0gchain/cosmovisor/upgrades && \
 mkdir -p $HOME/.0gchain/cosmovisor/backup
@@ -78,7 +78,7 @@ After=network-online.target
 
 [Service]
 User=root
-ExecStart=/root/go/bin/cosmovisor run --home /root/.0gchain
+ExecStart=/root/go/bin/cosmovisor run start --home /root/.0gchain
 WorkingDirectory=/root/.0gchain
 Restart=on-failure
 RestartSec=10
