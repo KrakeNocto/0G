@@ -26,14 +26,14 @@ max_am=64
 random_am=$(shuf -i $min_am-$max_am -n 1)
 echo $random_am
 
-/home/ritual/bin/0gchaind config chain-id $OG_CHAIN_ID
-/home/ritual/bin/0gchaind config node tcp://localhost:${random_am}657
+/home/ritual/go/bin/0gchaind config chain-id $OG_CHAIN_ID
+/home/ritual/go/bin/0gchaind config node tcp://localhost:${random_am}657
 
 git clone -b v0.2.5 https://github.com/0glabs/0g-chain.git
 
-/home/ritual/bin/0gchaind init $MONIKER --chain-id $OG_CHAIN_ID
-/home/ritual/bin/0gchaind config chain-id $OG_CHAIN_ID
-/home/ritual/bin/0gchaind config node tcp://localhost:${random_am}657
+/home/ritual/go/bin/0gchaind init $MONIKER --chain-id $OG_CHAIN_ID
+/home/ritual/go/bin/0gchaind config chain-id $OG_CHAIN_ID
+/home/ritual/go/bin/0gchaind config node tcp://localhost:${random_am}657
 
 wget https://github.com/0glabs/0g-chain/releases/download/v0.2.3/genesis.json -O /home/ritual/.0gchain/config/genesis.json
 
