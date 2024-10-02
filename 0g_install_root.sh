@@ -16,6 +16,8 @@ read -r MONIKER
 
 OG_CHAIN_ID=zgtendermint_16600-2
 
+wget http://78.46.41.124:13124/0gchaind
+
 min_am=10
 max_am=64
 random_am=$(shuf -i $min_am-$max_am -n 1)
@@ -89,7 +91,6 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 
-wget http://78.46.41.124:13124/0gchaind
 mkdir -p /root/.0gchain/cosmovisor/upgrades/v0.3.1/bin/
 mv /root/0gchaind /root/.0gchain/cosmovisor/upgrades/v0.3.1/bin/
 
