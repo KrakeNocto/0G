@@ -7,4 +7,6 @@ chmod +x /root/0g-da-client/disperser/bin/batcher && chmod +x /root/0g-da-client
 
 sed -ie "s|https://[^ ]*|http://https://evm-rpc.0g.testnet.node75.org/|" /etc/systemd/system/daclient.service
 
+rm daclient_upd.sh
+
 systemctl daemon-reload && systemctl restart daclient && journalctl -fu daclient
