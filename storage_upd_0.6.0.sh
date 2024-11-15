@@ -3,7 +3,7 @@
 systemctl stop zgstorage
 
 rm /home/ritual/0g-storage-node/target/release/zgs_node
-http://162.55.94.150:31212/zgs_node
+wget http://162.55.94.150:31212/zgs_node
 
 mv zgs_node /home/ritual/0g-storage-node/target/release/
 chmod +x /home/ritual/0g-storage-node/target/release/zgs_node
