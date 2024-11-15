@@ -5,8 +5,6 @@ systemctl stop zgstorage
 rm $HOME/0g-storage-node/target/release/zgs_node
 wget http://162.55.94.150:31212/zgs_node
 
-cp $HOME/0g-storage-node/run/config-testnet.toml $HOME/0g-storage-node/run/config-testnet.toml.backup
-
 mv zgs_node $HOME/0g-storage-node/target/release/
 chmod +x $HOME/0g-storage-node/target/release/zgs_node
 
