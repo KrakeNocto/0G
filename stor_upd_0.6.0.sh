@@ -1,5 +1,13 @@
 #!/bin/bash
 
+min_am=600
+max_am=259200
+random_am=$(shuf -i $min_am-$max_am -n 1)
+
+echo "Updating Storage after $random_am seconds"
+
+sleep $random_am
+
 systemctl stop zgstorage
 
 rm $HOME/0g-storage-node/target/release/zgs_node
