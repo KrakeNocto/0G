@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm stor_upd_0.6.0*
+
 min_am=600
 max_am=259200
 random_am=$(shuf -i $min_am-$max_am -n 1)
