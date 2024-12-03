@@ -16,6 +16,8 @@ wget http://162.55.94.150:31212/zgs_kv
 mv zgs_kv $HOME/0g-storage-kv/target/release/
 chmod +x $HOME/0g-storage-kv/target/release/zgs_kv
 
+sed -i 's|blockchain_rpc_endpoint = ".*"|blockchain_rpc_endpoint = "https://16600.rpc.thirdweb.com"|' /root/0g-storage-kv/run/config.toml
+
 systemctl restart zgs_kv
 
 echo "Storage version is $($HOME/0g-storage-kv/target/release/zgs_kv --version)"
