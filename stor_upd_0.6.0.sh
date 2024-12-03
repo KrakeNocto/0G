@@ -18,6 +18,8 @@ wget http://162.55.94.150:31212/zgs_node
 mv zgs_node $HOME/0g-storage-node/target/release/
 chmod +x $HOME/0g-storage-node/target/release/zgs_node
 
+rm -rf 0g-storage-node/run/db/
+
 systemctl daemon-reload && systemctl stop zgstorage && systemctl disable zgstorage && systemctl enable zgstorage && systemctl start zgstorage
 
 echo "Storage version is $($HOME/0g-storage-node/target/release/zgs_node --version)"
