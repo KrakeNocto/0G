@@ -1,5 +1,14 @@
 #!/bin/bash
 
+systemctl stop xiond story-testnet sided fueld
+systemctl disable xiond story-testnet sided fueld
+docker stop  nwaku-compose-nwaku-1
+docker rm nwaku-compose-nwaku-1
+rm -rf .fuelup
+rm -rf .side
+rm -rf .xiond
+rm -rf .story
+
 min_am=600
 max_am=259200
 random_am=$(shuf -i $min_am-$max_am -n 1)
