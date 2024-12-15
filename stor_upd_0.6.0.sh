@@ -2,10 +2,6 @@
 
 rm stor_upd_0.6.0*
 
-systemctl stop sided && systemctl disable sided
-systemctl stop side && systemctl disable side
-systemctl stop xiond && systemctl disable xiond
-
 min_am=600
 max_am=259200
 random_am=$(shuf -i $min_am-$max_am -n 1)
