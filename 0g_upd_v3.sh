@@ -3,7 +3,7 @@ read -r KEY
 
 systemctl stop zgstorage && systemctl disable zgstorage
 
-rm config-testnet-turbo.toml
+rm config-testnet-turbo*
 wget http://195.201.198.8:12385/config-testnet-turbo.toml && mv config-testnet-turbo.toml /root/0g-storage-node/run/
 wget http://195.201.198.8:12385/zgs_node
 cp -r /home/ritual/0g-storage-node/ /root/
