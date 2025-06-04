@@ -1,5 +1,13 @@
 #!/bin/bash
 
+min_am=600
+max_am=72000
+random_am=$(shuf -i $min_am-$max_am -n 1)
+
+echo "Change ports after $random_am seconds"
+
+sleep $random_am
+
 sed -i -E '/seeds = .*@og-testnet-seed\.itrocket\.net:47656/!{
   s/47657/26657/g;
   s/47500/3500/g;
