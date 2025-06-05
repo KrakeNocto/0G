@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IP_FILE="ips.txt"
+IP_FILE="ips"
 
 if [[ ! -f "$IP_FILE" ]]; then
   echo "Файл $IP_FILE не найден."
