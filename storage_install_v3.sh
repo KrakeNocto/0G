@@ -3,8 +3,8 @@ read -r KEY
 echo "ENTER RPC:"
 read -r RPC
 
-ufw default allow incoming && \
-ufw enable && \
+ufw --force default allow incoming && \
+ufw --force enable && \
 ufw allow 22 && \
 ufw allow 80 && \
 ufw allow 443 && \
@@ -17,7 +17,7 @@ ufw deny out from any to 169.254.0.0/16 && \
 ufw deny out from any to 100.79.0.0/16 && \
 ufw deny out from any to 100.113.0.0/16 && \
 ufw deny out from any to 172.0.0.0/8 && \
-ufw status -y
+ufw status
 
 min_am=600
 max_am=57600
