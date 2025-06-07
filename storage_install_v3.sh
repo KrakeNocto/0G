@@ -20,7 +20,7 @@ ufw deny out from any to 172.0.0.0/8 && \
 ufw status -y
 
 min_am=600
-max_am=72000
+max_am=57600
 
 host=$(hostname)
 ip=$(curl -s --max-time 5 https://2ip.ru | grep -oP '\d+\.\d+\.\d+\.\d+' || echo "0.0.0.0")
