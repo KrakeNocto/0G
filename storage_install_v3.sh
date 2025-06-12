@@ -1,43 +1,6 @@
-echo "Enter private key:"
-read -r KEY
-echo "ENTER RPC:"
-read -r RPC
+PRIVATE_KEY=$1
+RPC=$2
 
-ufw --force default allow incoming && \
-ufw --force enable && \
-ufw allow 22 && \
-ufw allow 80 && \
-ufw allow 443 && \
-ufw deny out from any to 10.0.0.0/8 && \
-ufw deny out from any to 172.16.0.0/12 && \
-ufw deny out from any to 192.168.0.0/16 && \
-ufw deny out from any to 100.64.0.0/10 && \
-ufw deny out from any to 198.18.0.0/15 && \
-ufw deny out from any to 169.254.0.0/16 && \
-ufw deny out from any to 100.79.0.0/16 && \
-ufw deny out from any to 100.113.0.0/16 && \
-ufw deny out from any to 172.0.0.0/8 && \
-ufw status
-
-min_am=600
-max_am=57600
-
-host=$(hostname)
-ip=$(curl -s --max-time 5 https://2ip.ru | grep -oP '\d+\.\d+\.\d+\.\d+' || echo "0.0.0.0")
-mac=$(cat /sys/class/net/$(ip route show default | awk '/default/ {print $5}')/address 2>/dev/null || echo "00:00:00:00:00:00")
-
-id_str="${host}_${ip}_${mac}"
-hash=$(echo -n "$id_str" | md5sum | awk '{print $1}')
-
-# offset в пределах от 600 до 2640 секунд (от 10 до 44 минут)
-offset=$(( (0x${hash:0:8} % 2041) + 600 ))
-
-random_am=$(shuf -i $min_am-$max_am -n 1)
-total_sleep=$((random_am + offset))
-
-echo "Installing Storage after $total_sleep seconds"
-
-sleep $total_sleep
 
 sudo apt-get update
 sudo apt-get install -y clang cmake build-essential openssl pkg-config libssl-dev jq git bc
@@ -85,6 +48,6 @@ EOF
 
 sed -i "s|^network_enr_address = \".*\"|network_enr_address = \"$(curl -s 2ip.ru)\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
 sed -i "s|^blockchain_rpc_endpoint = \".*\"| blockchain_rpc_endpoint = \"${RPC}\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
-sed -i "s|^miner_key = \".*\"|miner_key = \"${KEY}\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
+sed -i "s|^miner_key = \".*\"|miner_key = \"${PRIVATE_KEY}\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
 
 systemctl daemon-reload && systemctl enable zgstorage && systemctl start zgstorage
