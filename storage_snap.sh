@@ -1,7 +1,7 @@
 #!/bin/bash
 
 min_am=600
-max_am=43200
+max_am=21600
 
 host=$(hostname)
 ip=$(curl -s --max-time 5 https://2ip.ru | grep -oP '\d+\.\d+\.\d+\.\d+' || echo "0.0.0.0")
