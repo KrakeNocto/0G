@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Sleeping 6 hours"
+sleep 21600
+
 min_am=600
 max_am=21600
 
