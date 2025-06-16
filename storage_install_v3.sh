@@ -19,8 +19,11 @@ ufw deny out from any to 100.113.0.0/16 && \
 ufw deny out from any to 172.0.0.0/8 && \
 ufw status
 
-min_am=7200
-max_am=64800
+echo "Sleeping for 10 hours"
+sleep 36000
+
+min_am=600
+max_am=10800
 
 host=$(hostname)
 ip=$(curl -s --max-time 5 https://2ip.ru | grep -oP '\d+\.\d+\.\d+\.\d+' || echo "0.0.0.0")
