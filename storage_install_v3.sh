@@ -69,6 +69,7 @@ wget http://195.201.198.8:12385/config-testnet-turbo.toml
 mv config-testnet-turbo.toml /root/0g-storage-node/run/config-testnet-turbo.toml
 
 rm -rf $HOME/0g-storage-node/run/db/flow_db
+mkdir -p $HOME/0g-storage-node/run/db/
 wget https://snapshot.corenodehq.xyz/0g_testnet/flow_db.tar.gz -O $HOME/0g-storage-node/run/db/flow_db.tar.gz && tar -xzvf $HOME/0g-storage-node/run/db/flow_db.tar.gz -C $HOME/0g-storage-node/run/db/
 
 sudo tee /etc/systemd/system/zgstorage.service > /dev/null <<EOF
