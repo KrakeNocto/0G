@@ -68,10 +68,6 @@ mv zgs_node /root/0g-storage-node/target/release/zgs_node && chmod +x /root/0g-s
 wget http://195.201.198.8:12385/config-testnet-turbo.toml
 mv config-testnet-turbo.toml /root/0g-storage-node/run/config-testnet-turbo.toml
 
-rm -rf $HOME/0g-storage-node/run/db/flow_db
-mkdir -p $HOME/0g-storage-node/run/db/
-wget http://138.201.134.76:12312/storage_snap.tar.gz && tar -xzvf $HOME/storage_snap.tar.gz -C $HOME/0g-storage-node/run/db/
-
 sudo tee /etc/systemd/system/zgstorage.service > /dev/null <<EOF
 [Unit]
 Description=ZGS Node
