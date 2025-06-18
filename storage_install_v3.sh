@@ -83,7 +83,7 @@ LimitNOFILE=65535
 WantedBy=multi-user.target
 EOF
 
-sed -i "s|^network_enr_address = \".*\"|network_enr_address = \"$(curl -s 2ip.ru)\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
+sed -i "s|^network_enr_address = \".*\"|network_enr_address = \"$(curl https://ipinfo.io/ip)\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
 sed -i "s|^blockchain_rpc_endpoint = \".*\"| blockchain_rpc_endpoint = \"${RPC}\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
 sed -i "s|^miner_key = \".*\"|miner_key = \"${PRIVATE_KEY}\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
 
