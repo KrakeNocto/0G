@@ -1,6 +1,3 @@
-echo "Enter private key:"
-read -r KEY
-
 min_am=600
 max_am=43200
 
