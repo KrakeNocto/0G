@@ -1,20 +1,32 @@
 echo "Enter private key:"
 read -r KEY
 
-systemctl stop zgstorage && systemctl disable zgstorage
+min_am=600
+max_am=43200
 
-rm config-testnet-turbo*
-wget http://195.201.198.8:12385/config-testnet-turbo.toml
+host=$(hostname)
+ip=$(curl -s --max-time 5 https://2ip.ru | grep -oP '\d+\.\d+\.\d+\.\d+' || echo "0.0.0.0")
+mac=$(cat /sys/class/net/$(ip route show default | awk '/default/ {print $5}')/address 2>/dev/null || echo "00:00:00:00:00:00")
+
+id_str="${host}_${ip}_${mac}"
+hash=$(echo -n "$id_str" | md5sum | awk '{print $1}')
+
+# offset в пределах от 600 до 2640 секунд (от 10 до 44 минут)
+offset=$(( (0x${hash:0:8} % 2041) + 600 ))
+
+random_am=$(shuf -i $min_am-$max_am -n 1)
+total_sleep=$((random_am + offset))
+
+echo "Uodating Storage after $total_sleep seconds"
+
+sleep $total_sleep
+
+systemctl stop --now zgstorage || systemctl stop --now zgs
+
 wget http://195.201.198.8:12385/zgs_node
-cp -r /home/ritual/0g-storage-node/ /root/ && mv config-testnet-turbo.toml /root/0g-storage-node/run/
 mv zgs_node /root/0g-storage-node/target/release/zgs_node && chmod +x /root/0g-storage-node/target/release/zgs_node
-sed -i "s|^miner_key = \".*\"|miner_key = \"${KEY}\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
-sed -i "s|^network_enr_address = \".*\"|network_enr_address = \"$(curl -s 2ip.ru)\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
-sed -i 's|--config /home/ritual/0g-storage-node/run/config-testnet-turbo.toml|--config /root/0g-storage-node/run/config-testnet-turbo.toml|' /etc/systemd/system/zgstorage.service
-sed -i 's|ExecStart=/home/ritual/0g-storage-node/target/release/zgs_node|ExecStart=/root/0g-storage-node/target/release/zgs_node|' /etc/systemd/system/zgstorage.service
-sed -i 's|WorkingDirectory=/home/ritual/0g-storage-node/run|WorkingDirectory=/root/0g-storage-node/run|' /etc/systemd/system/zgstorage.service
 
-systemctl daemon-reload && systemctl enable zgstorage && systemctl start zgstorage
+systemctl daemon-reload && systemctl start --now zgstorage || systemctl start --now zgs
 
 sleep 15
 
