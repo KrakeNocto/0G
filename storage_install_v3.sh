@@ -1,5 +1,4 @@
-echo "Enter Private Key:"
-read -r PRIVATE_KEY_STORAGE
+PRIVATE_KEY_STORAGE="${1:-${PRIVATE_KEY_STORAGE}}"
 
 min_am=600
 max_am=43200
