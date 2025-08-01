@@ -1,3 +1,5 @@
+#!/bin/bash
+
 PRIVATE_KEY_STORAGE="${1:-${PRIVATE_KEY_STORAGE}}"
 
 min_am=600
