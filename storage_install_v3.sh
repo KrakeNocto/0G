@@ -26,7 +26,7 @@ sleep $total_sleep
 sudo apt-get update
 sudo apt-get install -y clang cmake build-essential openssl pkg-config libssl-dev jq git bc
 
-git clone -b v1.0.0 https://github.com/0glabs/0g-storage-node.git
+git clone -b v1.1.0 https://github.com/0glabs/0g-storage-node.git
 
 cd $HOME/0g-storage-node
 git stash
