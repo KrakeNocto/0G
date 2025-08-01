@@ -1,7 +1,5 @@
 echo "Enter Private Key:"
-read -r PRIVATE_KEY
-echo "Enter RPC:"
-read -r RPC
+read -r PRIVATE_KEY_STORAGE
 
 min_am=600
 max_am=43200
@@ -56,7 +54,7 @@ WantedBy=multi-user.target
 EOF
 
 sed -i "s|^network_enr_address = \".*\"|network_enr_address = \"$(curl https://ipinfo.io/ip)\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
-sed -i "s|^blockchain_rpc_endpoint = \".*\"| blockchain_rpc_endpoint = \"${RPC}\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
-sed -i "s|^miner_key = \".*\"|miner_key = \"${PRIVATE_KEY}\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
+sed -i "s|^blockchain_rpc_endpoint = \".*\"| blockchain_rpc_endpoint = \"${curl https://ipinfo.io/ip}:8545\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
+sed -i "s|^miner_key = \".*\"|miner_key = \"${PRIVATE_KEY_STORAGE}\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
 
 systemctl daemon-reload && systemctl enable --now zgstorage
