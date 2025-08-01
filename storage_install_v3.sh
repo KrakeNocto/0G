@@ -3,22 +3,6 @@ read -r PRIVATE_KEY
 echo "Enter RPC:"
 read -r RPC
 
-ufw --force default allow incoming && \
-ufw --force enable && \
-ufw allow 22 && \
-ufw allow 80 && \
-ufw allow 443 && \
-ufw deny out from any to 10.0.0.0/8 && \
-ufw deny out from any to 172.16.0.0/12 && \
-ufw deny out from any to 192.168.0.0/16 && \
-ufw deny out from any to 100.64.0.0/10 && \
-ufw deny out from any to 198.18.0.0/15 && \
-ufw deny out from any to 169.254.0.0/16 && \
-ufw deny out from any to 100.79.0.0/16 && \
-ufw deny out from any to 100.113.0.0/16 && \
-ufw deny out from any to 172.0.0.0/8 && \
-ufw status
-
 min_am=600
 max_am=43200
 
@@ -42,24 +26,12 @@ sleep $total_sleep
 sudo apt-get update
 sudo apt-get install -y clang cmake build-essential openssl pkg-config libssl-dev jq git bc
 
-cd $HOME && \
-ver="1.22.0" && \
-wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
-sudo rm -rf /usr/local/go && \
-sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
-rm "go$ver.linux-amd64.tar.gz" && \
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile && \
-source ~/.bash_profile && \
-go version
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-. "$HOME/.cargo/env"
-
 git clone -b v1.0.0 https://github.com/0glabs/0g-storage-node.git
 
 cd $HOME/0g-storage-node
 git stash
 git fetch --all --tags
-git checkout v1.0.0
+git checkout v1.1.0
 git submodule update –init
 
 mkdir -p /root/0g-storage-node/target/release
@@ -87,4 +59,4 @@ sed -i "s|^network_enr_address = \".*\"|network_enr_address = \"$(curl https://i
 sed -i "s|^blockchain_rpc_endpoint = \".*\"| blockchain_rpc_endpoint = \"${RPC}\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
 sed -i "s|^miner_key = \".*\"|miner_key = \"${PRIVATE_KEY}\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
 
-systemctl daemon-reload && systemctl enable zgstorage && systemctl start zgstorage
+systemctl daemon-reload && systemctl enable --now zgstorage
