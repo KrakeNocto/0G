@@ -3,7 +3,7 @@
 MONIKER="${1:-${MONIKER}}"
 echo "Moniker: $MONIKER"
 
-sudo apt update && sudo apt upgrade -y
+sudo apt update
 sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
 
 cd $HOME && \
