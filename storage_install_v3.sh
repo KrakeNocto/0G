@@ -55,7 +55,8 @@ WantedBy=multi-user.target
 EOF
 
 sed -i "s|^network_enr_address = \".*\"|network_enr_address = \"$(curl https://ipinfo.io/ip)\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
-sed -i "s|^blockchain_rpc_endpoint = \".*\"| blockchain_rpc_endpoint = \"${curl -s https://ipinfo.io/ip}:8545\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
+sed -i -E 's|^[[:space:]]*blockchain_rpc_endpoint[[:space:]]*=[[:space:]]*".*"|blockchain_rpc_endpoint = "http://'$(curl -s https://ipinfo.io/ip)':8545"|' \
+/root/0g-storage-node/run/config-testnet-turbo.toml
 sed -i "s|^miner_key = \".*\"|miner_key = \"${PRIVATE_KEY_STORAGE}\"|" /root/0g-storage-node/run/config-testnet-turbo.toml
 
 systemctl daemon-reload && systemctl enable --now zgstorage
